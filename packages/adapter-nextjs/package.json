@@ -8,6 +8,7 @@
 		"next": ">=14.2.3 <15.0.0"
 	},
 	"dependencies": {
+		"client-only": "0.0.1",
 		"cookie": "0.5.0"
 	},
 	"devDependencies": {
@@ -41,6 +42,11 @@
 			"types": "./dist/esm/api/index.d.ts",
 			"import": "./dist/esm/api/index.mjs",
 			"require": "./dist/cjs/api/index.js"
+		},
+		"./client": {
+			"types": "./dist/esm/client/index.d.ts",
+			"import": "./dist/esm/client/index.mjs",
+			"require": "./dist/cjs/client/index.js"
 		},
 		"./package.json": "./package.json"
 	},

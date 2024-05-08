@@ -9,7 +9,13 @@ import { NextServer } from '../types';
 
 export const createServerRunnerForAPI = ({
 	config,
-}: NextServer.CreateServerRunnerInput): NextServer.CreateServerRunnerOutput & {
+}: Omit<NextServer.CreateServerRunnerInput, 'origin'>): Omit<
+	NextServer.CreateServerRunnerOutput,
+	| 'createOAuthRouteHandler'
+	| 'getOAuthInitiationRoute'
+	| 'createTokenExchangeRouteHandler'
+	| 'origin'
+> & {
 	resourcesConfig: ResourcesConfig;
 } => {
 	const amplifyConfig = parseAmplifyConfig(config);

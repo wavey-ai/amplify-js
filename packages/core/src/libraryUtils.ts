@@ -30,6 +30,7 @@ export { AmplifyUrl, AmplifyUrlSearchParams } from './utils/amplifyUrl';
 export { parseAmplifyConfig } from './utils/parseAmplifyConfig';
 export { getClientInfo } from './utils';
 export { getDeviceName } from './utils/deviceName';
+export { runInBrowserContext } from './utils/contextAwareRunner';
 
 // Auth utilities
 export {

@@ -248,4 +248,20 @@ export class CognitoAWSCredentialsAndIdentityIdProvider
 				this._credentialsAndIdentityId.associatedIdToken
 		);
 	}
+
+	setIdentityIdCredentials(payload: CredentialsAndIdentityId, idToken: string) {
+		this._nextCredentialsRefresh =
+			typeof payload.credentials.expiration === 'string'
+				? new Date(payload.credentials.expiration).getTime()
+				: 0;
+		this._identityIdStore.setPrimaryIdentityId({
+			id: payload.identityId!,
+			type: 'primary',
+		});
+		this._credentialsAndIdentityId = {
+			...payload,
+			isAuthenticatedCreds: true,
+			associatedIdToken: idToken,
+		};
+	}
 }

@@ -6,6 +6,9 @@ import { parseAmplifyConfig } from '@aws-amplify/core/internals/utils';
 
 import { createRunWithAmplifyServerContext } from './utils';
 import { NextServer } from './types';
+import { createOAuthRouteHandlerFactory } from './oauth';
+import { createTokenExchangeRouteHandlerFactory } from './auth/createTokenExchangeRouteHandlerFactory';
+import { createGetOAuthInitiationRouteFactory } from './oauth/createGetOAuthInitiationRouteFactory';
 
 /**
  * Creates the `runWithAmplifyServerContext` function to run Amplify server side APIs in an isolated request context.
@@ -27,12 +30,28 @@ import { NextServer } from './types';
  */
 export const createServerRunner: NextServer.CreateServerRunner = ({
 	config,
+	origin,
+	setAuthCookieOptions,
 }) => {
 	const amplifyConfig = parseAmplifyConfig(config);
 
 	return {
 		runWithAmplifyServerContext: createRunWithAmplifyServerContext({
 			config: amplifyConfig,
+			setAuthCookieOptions,
+		}),
+		createOAuthRouteHandler: createOAuthRouteHandlerFactory({
+			config: amplifyConfig,
+			setAuthCookieOptions,
+		}),
+		getOAuthInitiationRoute: createGetOAuthInitiationRouteFactory({
+			config: amplifyConfig,
+			origin,
+		}),
+		createTokenExchangeRouteHandler: createTokenExchangeRouteHandlerFactory({
+			config: amplifyConfig,
+			origin,
+			setAuthCookieOptions,
 		}),
 	};
 };

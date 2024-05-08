@@ -72,6 +72,8 @@ export {
 	UpdateUserAttributeOutput,
 	FetchDevicesOutput,
 } from './providers/cognito';
+export { cognitoHostedUIIdentityProviderMap } from './providers/cognito/types/models';
+export { AuthProvider } from './types/inputs';
 
 export { AuthError } from './errors/AuthError';
 

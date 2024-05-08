@@ -90,7 +90,7 @@ const handleCodeFlow = async ({
 	}
 
 	// may throw error is being caught in attemptCompleteOAuthFlow.ts
-	const validatedState = await validateState(state);
+	const validatedState = await validateState(oAuthStore, state);
 
 	const oAuthTokenEndpoint = 'https://' + domain + '/oauth2/token';
 
@@ -199,7 +199,7 @@ const handleImplicitFlow = async ({
 		throw createOAuthError('No access token returned from OAuth flow.');
 	}
 
-	const validatedState = await validateState(state);
+	const validatedState = await validateState(oAuthStore, state);
 	const username =
 		(access_token && decodeJWT(access_token).payload.username) ?? 'username';
 

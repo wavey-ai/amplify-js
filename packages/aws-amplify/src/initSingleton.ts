@@ -48,6 +48,14 @@ export const DefaultAmplify = {
 		// If Auth options are provided, always just configure as is.
 		// Otherwise, we can assume no Auth libraryOptions were provided from here on.
 		if (libraryOptions?.Auth) {
+			if (
+				libraryOptions.Auth.tokenProvider === cognitoUserPoolsTokenProvider &&
+				libraryOptions.Auth.credentialsProvider === cognitoCredentialsProvider
+			) {
+				cognitoUserPoolsTokenProvider.setAuthConfig(
+					resolvedResourceConfig.Auth,
+				);
+			}
 			Amplify.configure(resolvedResourceConfig, libraryOptions);
 
 			return;

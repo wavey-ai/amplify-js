@@ -12,4 +12,5 @@ export interface IdentityIdStore {
 	loadIdentityId(): Promise<Identity | null>;
 	storeIdentityId(identity: Identity): Promise<void>;
 	clearIdentityId(): Promise<void>;
+	setPrimaryIdentityId(identity: Identity & { type: 'primary' }): void;
 }

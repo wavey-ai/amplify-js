@@ -101,7 +101,7 @@ export class DefaultTokenStore implements AuthTokenStore {
 			this.getLastAuthUserKey(),
 			lastAuthUser,
 		);
-		const authKeys = await this.getAuthKeys();
+		const authKeys = await this.getAuthKeys(lastAuthUser);
 		await this.getKeyValueStorage().setItem(
 			authKeys.accessToken,
 			tokens.accessToken.toString(),

@@ -4,11 +4,22 @@
 import { GetServerSidePropsContext as NextGetServerSidePropsContext } from 'next';
 import { NextRequest, NextResponse } from 'next/server.js';
 import { cookies } from 'next/headers.js';
-import { AmplifyOutputs, LegacyConfig } from 'aws-amplify/adapter-core';
+import {
+	AmplifyOutputs,
+	CookieStorage,
+	LegacyConfig,
+} from 'aws-amplify/adapter-core';
 import { AmplifyServer } from '@aws-amplify/core/internals/adapter-core';
 import { ResourcesConfig } from '@aws-amplify/core';
 
+import {
+	CreateOAuthRouteHandler,
+	GetOAuthInitiationRoute,
+} from '../oauth/types';
+import { CreateTokenExchangeRouteHandler } from '../auth/types';
+
 export declare namespace NextServer {
+	export type SetCookieOptions = CookieStorage.SetCookieOptions;
 	/**
 	 * This context is normally available in the following:
 	 *   - Next App Router [middleware](https://nextjs.org/docs/app/building-your-application/routing/middleware)
@@ -74,11 +85,26 @@ export declare namespace NextServer {
 	) => Promise<OperationResult>;
 
 	export interface CreateServerRunnerInput {
+		/**
+		 * The Amplify resources config. Typically imported from `amplify_outputs.json` (Gen2)
+		 * or `amplifyconfiguration.json` (Gen1).
+		 */
 		config: ResourcesConfig | LegacyConfig | AmplifyOutputs;
+		/**
+		 * The origin of your Next app.
+		 */
+		origin?: string;
+		/**
+		 * Configures attributes of Set-Cookie.
+		 */
+		setAuthCookieOptions?: SetCookieOptions;
 	}
 
 	export interface CreateServerRunnerOutput {
 		runWithAmplifyServerContext: RunOperationWithContext;
+		createOAuthRouteHandler: CreateOAuthRouteHandler;
+		getOAuthInitiationRoute: GetOAuthInitiationRoute;
+		createTokenExchangeRouteHandler: CreateTokenExchangeRouteHandler;
 	}
 
 	export type CreateServerRunner = (

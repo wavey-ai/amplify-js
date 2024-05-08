@@ -81,3 +81,13 @@ export {
 	DefaultTokenStore,
 	refreshAuthTokens,
 } from './tokenProvider';
+export {
+	generateState,
+	getRedirectUrl,
+	generateCodeVerifier,
+	validateState,
+} from './utils/oauth';
+export { DefaultOAuthStore } from './utils/signInWithRedirectStore';
+export { AuthenticationResultType } from './utils/clients/CognitoIdentityProvider/types';
+export { DeviceMetadata } from './tokenProvider/types';
+export { CognitoAuthSignInDetails } from './types';

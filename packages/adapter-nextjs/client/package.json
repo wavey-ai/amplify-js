@@ -1,0 +1,7 @@
+{
+	"name": "@aws-amplify/adapter-nextjs/client",
+	"main": "../dist/cjs/client/index.js",
+	"browser": "../dist/esm/client/index.mjs",
+	"module": "../dist/esm/client/index.mjs",
+	"typings": "../dist/esm/client/index.d.ts"
+}

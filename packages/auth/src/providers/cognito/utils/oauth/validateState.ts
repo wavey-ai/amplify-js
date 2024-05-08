@@ -3,8 +3,7 @@
 
 import { AuthError } from '../../../../errors/AuthError';
 import { AuthErrorTypes } from '../../../../types/Auth';
-
-import { oAuthStore } from './oAuthStore';
+import { DefaultOAuthStore } from '../signInWithRedirectStore';
 
 export const flowCancelledMessage = '`signInWithRedirect` has been canceled.';
 export const validationFailedMessage =
@@ -12,7 +11,10 @@ export const validationFailedMessage =
 export const validationRecoverySuggestion =
 	'Try to initiate an OAuth flow from Amplify';
 
-export const validateState = async (state?: string | null): Promise<string> => {
+export const validateState = async (
+	oAuthStore: DefaultOAuthStore,
+	state?: string | null,
+): Promise<string> => {
 	const savedState = await oAuthStore.loadOAuthState();
 
 	// This is because savedState only exists if the flow was initiated by Amplify

@@ -15,3 +15,13 @@ export {
 	AmplifyServer,
 	CookieStorage,
 } from '@aws-amplify/core/internals/adapter-core';
+export {
+	cognitoHostedUIIdentityProviderMap,
+	AuthProvider,
+} from '@aws-amplify/auth';
+export {
+	generateState,
+	getRedirectUrl,
+	generateCodeVerifier,
+	validateState,
+} from '@aws-amplify/auth/cognito';

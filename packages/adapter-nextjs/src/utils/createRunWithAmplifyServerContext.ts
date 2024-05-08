@@ -15,8 +15,10 @@ import { createCookieStorageAdapterFromNextServerContext } from './createCookieS
 
 export const createRunWithAmplifyServerContext = ({
 	config: resourcesConfig,
+	setAuthCookieOptions,
 }: {
 	config: ResourcesConfig;
+	setAuthCookieOptions?: NextServer.SetCookieOptions;
 }) => {
 	const runWithAmplifyServerContext: NextServer.RunOperationWithContext =
 		async ({ nextServerContext, operation }) => {
@@ -34,6 +36,7 @@ export const createRunWithAmplifyServerContext = ({
 								createCookieStorageAdapterFromNextServerContext(
 									nextServerContext,
 								),
+								setAuthCookieOptions,
 							);
 				const credentialsProvider = createAWSCredentialsAndIdentityIdProvider(
 					resourcesConfig.Auth,

@@ -82,6 +82,10 @@ export class DefaultIdentityIdStore implements IdentityIdStore {
 		this._primaryIdentityId = undefined;
 		await this.keyValueStorage.removeItem(this._authKeys.identityId);
 	}
+
+	setPrimaryIdentityId(identity: Identity & { type: 'primary' }) {
+		this._primaryIdentityId = identity.id;
+	}
 }
 
 const createKeysForAuthStorage = (provider: string, identifier: string) => {

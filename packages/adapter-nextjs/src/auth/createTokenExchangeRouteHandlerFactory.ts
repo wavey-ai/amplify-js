@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server.js';
-import { cookies } from 'next/headers';
+import { cookies } from 'next/headers.js';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
 
 import { createRunWithAmplifyServerContext } from '../utils';

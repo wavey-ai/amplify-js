@@ -3,7 +3,7 @@ import {
 	OAuthConfig,
 	decodeJWT,
 } from '@aws-amplify/core';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server.js';
 import {
 	createKeyValueStorageFromCookieStorageAdapter,
 	validateState,

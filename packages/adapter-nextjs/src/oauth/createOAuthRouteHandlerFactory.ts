@@ -18,6 +18,7 @@ import { completeOAuthFlow } from './utils/completeOAuthFlow';
 
 export const createOAuthRouteHandlerFactory: CreateOAuthRouteHandlerFactory = ({
 	config: resourcesConfig,
+	origin,
 	setAuthCookieOptions,
 }): CreateOAuthRouteHandler => {
 	const handleRequest = async (
@@ -28,6 +29,7 @@ export const createOAuthRouteHandlerFactory: CreateOAuthRouteHandlerFactory = ({
 			onError,
 		}: CreateOAuthRouteHandlerInput,
 	): Promise<Response | void> => {
+		if (!origin) throw new Error('Origin is not provided');
 		assertTokenProviderConfig(resourcesConfig.Auth?.Cognito);
 		assertOAuthConfig(resourcesConfig.Auth.Cognito);
 
@@ -37,6 +39,7 @@ export const createOAuthRouteHandlerFactory: CreateOAuthRouteHandlerFactory = ({
 		// when request url has `init` query param - initiate oauth flow
 		if (searchParams.has('init')) {
 			return initOAuthFlow({
+				origin,
 				setAuthCookieOptions,
 				request,
 				customState,
@@ -47,6 +50,7 @@ export const createOAuthRouteHandlerFactory: CreateOAuthRouteHandlerFactory = ({
 
 		if (searchParams.has('code') && searchParams.has('state')) {
 			return completeOAuthFlow({
+				origin,
 				request,
 				redirectOnComplete: redirectOnAuthComplete,
 				setAuthCookieOptions,

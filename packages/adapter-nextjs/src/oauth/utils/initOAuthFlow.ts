@@ -25,6 +25,7 @@ export const initOAuthFlow = async ({
 	oAuthConfig,
 	setAuthCookieOptions,
 }: {
+	origin: string;
 	request: NextRequest;
 	customState: string | undefined;
 	cognitoUserPoolConfig: CognitoUserPoolConfig;
@@ -41,7 +42,7 @@ export const initOAuthFlow = async ({
 	const scope = oAuthConfig.scopes.join(' ');
 
 	const redirectUrlSearchParams = new URLSearchParams({
-		redirect_uri: getRedirectUrl(request.nextUrl.origin, oAuthConfig),
+		redirect_uri: getRedirectUrl(origin, oAuthConfig),
 		response_type: oAuthConfig.responseType,
 		client_id: cognitoUserPoolConfig.userPoolClientId!,
 		identity_provider: provider,

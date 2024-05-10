@@ -34,6 +34,7 @@ export type CreateOAuthRouteHandler = (
 
 interface CreateOAuthRouteHandlerFactoryInput {
 	config: ResourcesConfig;
+	origin?: string;
 	setAuthCookieOptions?: NextServer.SetCookieOptions;
 }
 

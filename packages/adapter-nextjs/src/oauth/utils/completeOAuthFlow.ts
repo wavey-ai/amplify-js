@@ -23,12 +23,14 @@ import { createCookieStorageAdapterFromNextServerContext } from '../../utils/cre
 import { getRedirectUrl } from './getRedirectUrl';
 
 export const completeOAuthFlow = async ({
+	origin,
 	request,
 	redirectOnComplete,
 	cognitoUserPoolConfig,
 	oAuthConfig,
 	setAuthCookieOptions,
 }: {
+	origin: string;
 	request: NextRequest;
 	customState: string | undefined;
 	redirectOnComplete: string;
@@ -72,7 +74,7 @@ export const completeOAuthFlow = async ({
 		code,
 		client_id: cognitoUserPoolConfig.userPoolClientId,
 		// TODO(Hui): request.nextUrl.origin should be generic and not use Next specifics
-		redirect_uri: getRedirectUrl(request.nextUrl.origin, oAuthConfig),
+		redirect_uri: getRedirectUrl(origin, oAuthConfig),
 		...(codeVerifier ? { code_verifier: codeVerifier } : {}),
 	};
 

@@ -44,9 +44,7 @@ export const completeOAuthFlow = async ({
 
 	const oAuthTokenEndpoint = `https://${oAuthConfig.domain}/oauth2/token`;
 
-	const response = NextResponse.redirect(
-		new URL(redirectOnComplete, request.url),
-	);
+	const response = NextResponse.redirect(new URL(redirectOnComplete, origin));
 
 	const keyValueStorage = createKeyValueStorageFromCookieStorageAdapter(
 		createCookieStorageAdapterFromNextServerContext({

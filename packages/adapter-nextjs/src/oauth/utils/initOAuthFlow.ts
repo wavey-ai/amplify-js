@@ -19,6 +19,7 @@ import { NextServer } from '../../types';
 import { getRedirectUrl } from './getRedirectUrl';
 
 export const initOAuthFlow = async ({
+	origin,
 	request,
 	customState,
 	cognitoUserPoolConfig,

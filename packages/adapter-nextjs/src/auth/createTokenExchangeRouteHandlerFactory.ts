@@ -26,6 +26,14 @@ export const createTokenExchangeRouteHandlerFactory: CreateTokenExchangeRouteHan
 				);
 			}
 
+			if (
+				cookies()
+					.getAll()
+					.findIndex(cookie => cookie.name.includes('.refreshToken')) === -1
+			) {
+				return new Response(null, { status: 403 });
+			}
+
 			const userSession = await runWithAmplifyServerContext({
 				nextServerContext: { cookies },
 				operation: contextSpec => fetchAuthSession(contextSpec),

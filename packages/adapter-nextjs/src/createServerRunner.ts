@@ -42,6 +42,7 @@ export const createServerRunner: NextServer.CreateServerRunner = ({
 		}),
 		createOAuthRouteHandler: createOAuthRouteHandlerFactory({
 			config: amplifyConfig,
+			origin,
 			setAuthCookieOptions,
 		}),
 		getOAuthInitiationRoute: createGetOAuthInitiationRouteFactory({

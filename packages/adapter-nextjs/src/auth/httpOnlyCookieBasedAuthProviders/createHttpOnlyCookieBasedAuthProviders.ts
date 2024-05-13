@@ -36,6 +36,10 @@ const refreshSession = async ({
 	credentialsProvider: typeof cognitoCredentialsProvider;
 }) => {
 	const response = await fetch(authTokenExchangeRoute, { method: 'POST' });
+	if (response.status !== 200) {
+		return;
+	}
+
 	const session = await response.json();
 
 	tokenProvider.tokenOrchestrator.setTokens({

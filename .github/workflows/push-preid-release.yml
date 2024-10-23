@@ -9,7 +9,7 @@ on:
   push:
     branches:
       # Change this to your branch name where "example-preid" corresponds to the preid you want your changes released on
-      - feat/next-15/main
+      - hui/test/adapter-nextjs/next-15
 
 jobs:
   e2e:

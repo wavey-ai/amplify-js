@@ -74,7 +74,7 @@ jobs:
         run: |
           yarn start &
           yarn detox:build
-          $GITHUB_WORKSPACE/amplify-js/scripts/retry-yarn-script.sh -s 'yarn detox:test' -n 3
+          $GITHUB_WORKSPACE/amplify-js/scripts/retry-yarn-script.sh -s 'detox:test' -n 3
         env:
           JEST_JUNIT_OUTPUT_DIR: reports/junit
           JEST_JUNIT_OUTPUT_NAME: detox-test-results.xml

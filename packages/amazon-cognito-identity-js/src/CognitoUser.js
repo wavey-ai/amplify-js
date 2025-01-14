@@ -802,7 +802,9 @@ export default class CognitoUser {
 		const challengeResponses = {};
 		challengeResponses.USERNAME = this.username;
 		challengeResponses.ANSWER = answerChallenge;
-
+		if (clientMetadata) {
+			challengeResponses.SECRET_HASH = clientMetadata.secretHash;
+ 		}
 		const authenticationHelper = new AuthenticationHelper(
 			this.pool.getUserPoolName()
 		);

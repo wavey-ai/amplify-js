@@ -112,6 +112,7 @@ export default class CognitoUserPool {
 			UserAttributes: userAttributes,
 			ValidationData: validationData,
 			ClientMetadata: clientMetadata,
+			SecretHash: clientMetadata.secretHash,
 		};
 		if (this.getUserContextData(username)) {
 			jsonReq.UserContextData = this.getUserContextData(username);

@@ -7,6 +7,8 @@ import Client from './Client';
 import CognitoUser from './CognitoUser';
 import StorageHelper from './StorageHelper';
 
+import CryptoJS from 'crypto-js';
+
 const USER_POOL_ID_MAX_LENGTH = 55;
 
 /** @class */
@@ -32,6 +34,7 @@ export default class CognitoUserPool {
 			endpoint,
 			fetchOptions,
 			AdvancedSecurityDataCollectionFlag,
+			ClientSecret,
 		} = data || {};
 		if (!UserPoolId || !ClientId) {
 			throw new Error('Both UserPoolId and ClientId are required.');
@@ -43,6 +46,7 @@ export default class CognitoUserPool {
 
 		this.userPoolId = UserPoolId;
 		this.clientId = ClientId;
+		this.clientSecret = ClientSecret;
 
 		this.client = new Client(region, endpoint, fetchOptions);
 
@@ -59,6 +63,12 @@ export default class CognitoUserPool {
 			this.wrapRefreshSessionCallback = wrapRefreshSessionCallback;
 		}
 	}
+
+	generateSecretHash(username) {
+		const message = username + this.clientId;
+		const hashResult = CryptoJS.HmacSHA256(message, this.clientSecret);
+		return CryptoJS.enc.Base64.stringify(hashResult);
+	};
 
 	/**
 	 * @returns {string} the user pool id
@@ -112,7 +122,7 @@ export default class CognitoUserPool {
 			UserAttributes: userAttributes,
 			ValidationData: validationData,
 			ClientMetadata: clientMetadata,
-			SecretHash: clientMetadata.secretHash,
+			SecretHash: this.generateSecretHash(username),
 		};
 		if (this.getUserContextData(username)) {
 			jsonReq.UserContextData = this.getUserContextData(username);

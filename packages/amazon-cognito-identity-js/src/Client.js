@@ -80,68 +80,74 @@ export default class Client {
 			'Content-Type': 'application/x-amz-json-1.1',
 			'X-Amz-Target': `AWSCognitoIdentityProviderService.${operation}`,
 			'X-Amz-User-Agent': getAmplifyUserAgent(),
-			'Cache-Control': 'no-store',
+			'Cache-Control': 'no-store'
 		};
 
 		const options = Object.assign({}, this.fetchOptions, {
 			headers,
 			method: 'POST',
 			mode: 'cors',
-			body: JSON.stringify(params),
+			body: JSON.stringify(params)
 		});
 
 		let response;
-		let responseJsonData;
 
 		fetch(this.endpoint, options)
-			.then(
-				resp => {
-					response = resp;
-					return resp;
-				},
-				err => {
-					// If error happens here, the request failed
-					// if it is TypeError throw network error
-					if (err instanceof TypeError) {
-						throw new Error('Network error');
-					}
-					throw err;
+			.then(resp => {
+				response = resp;
+				return resp;
+			}, err => {
+				if (err instanceof TypeError) {
+					const error = new Error('Network error');
+					error.details = { message: 'Network error occurred' };
+					throw error;
 				}
-			)
+				throw err;
+			})
 			.then(resp => resp.json().catch(() => ({})))
 			.then(data => {
-				// return parsed body stream
 				if (response.ok) return callback(null, data);
-				responseJsonData = data;
-
-				// Taken from aws-sdk-js/lib/protocol/json.js
-				// eslint-disable-next-line no-underscore-dangle
-				const code = (data.__type || data.code).split('#').pop();
-				const error = new Error(data.message || data.Message || null);
+				const headerObj = {};
+				response.headers.forEach((value, key) => {
+					headerObj[key] = value;
+				});
+				const errorDetails = {
+					status: response.status,
+					statusText: response.statusText,
+					headers: headerObj,
+					body: data
+				};
+				const code = (data.__type || data.code || 'UnknownError').split('#').pop();
+				const error = new Error(data.message || data.Message || 'HTTP error occurred');
 				error.name = code;
 				error.code = code;
+				error.statusCode = response.status;
+				error.details = errorDetails;
 				return callback(error);
 			})
 			.catch(err => {
-				// first check if we have a service error
-				if (
-					response &&
-					response.headers &&
-					response.headers.get('x-amzn-errortype')
-				) {
+				if (response && response.headers && response.headers.get('x-amzn-errortype')) {
 					try {
 						const code = response.headers.get('x-amzn-errortype').split(':')[0];
-						const error = new Error(
-							response.status ? response.status.toString() : null
-						);
+						const headerObj = {};
+						response.headers.forEach((value, key) => {
+							headerObj[key] = value;
+						});
+						const errorDetails = {
+							status: response.status,
+							statusText: response.statusText,
+							headers: headerObj
+						};
+						const error = new Error(response.status ? response.status.toString() : 'HTTP error');
 						error.code = code;
 						error.name = code;
 						error.statusCode = response.status;
+						error.details = errorDetails;
 						return callback(error);
 					} catch (ex) {
+						err.details = { message: 'Error processing service error', exception: ex };
 						return callback(err);
 					}
-					// otherwise check if error is Network error
 				} else if (err instanceof Error && err.message === 'Network error') {
 					err.code = 'NetworkError';
 				}

@@ -65,6 +65,9 @@ export default class CognitoUserPool {
 	}
 
 	generateSecretHash(username) {
+		if (!this.clientSecret) {
+			return ""
+		}
 		const message = username + this.clientId;
 		const hashResult = CryptoJS.HmacSHA256(message, this.clientSecret);
 		return CryptoJS.enc.Base64.stringify(hashResult);
